@@ -27,13 +27,17 @@ const Login = () => {
     }
   };
 
+  const handleSignupRedirect = () => {
+    setShowNoUserPopup(false);
+    navigate('/signup');
+  };
+
   return (
     <section className="min-h-screen bg-gradient-to-r from-[#0000] to-[#009ffd] text-white px-4">
       <Navbar />
 
       {/* Centered Login Container */}
       <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] space-y-8 pt-20">
-        
         {/* Heading */}
         <h2 className="text-3xl md:text-4xl font-light text-center text-white tracking-wide">
           Login to Your NeuroMind Account
@@ -41,7 +45,6 @@ const Login = () => {
 
         {/* Input, Link, Button */}
         <div className="w-full max-w-md space-y-5 px-2 relative">
-
           {/* Email Input */}
           <motion.div
             className="relative"
@@ -125,9 +128,9 @@ const Login = () => {
             </p>
             <button
               className="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600"
-              onClick={() => setShowNoUserPopup(false)}
+              onClick={handleSignupRedirect}
             >
-              Okay
+              Sign Up
             </button>
           </div>
         </motion.div>

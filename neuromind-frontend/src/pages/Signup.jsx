@@ -3,6 +3,12 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { FaGoogle, FaApple } from 'react-icons/fa';
+import { SiSamsung } from 'react-icons/si';
+import { auth, provider } from '../firebase';
+import { signInWithPopup } from 'firebase/auth';
+
+
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -43,12 +49,24 @@ const Signup = () => {
       password: form.password,
     };
 
-    // Store the user
     localStorage.setItem('neuroUser', JSON.stringify(user));
-
-    // Redirect to dashboard
     setShowPopup(false);
     navigate('/dashboard');
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Save email (or whole user) in local storage if needed
+      localStorage.setItem('neuroUser', JSON.stringify({ email: user.email, name: user.displayName }));
+
+      // Directly navigate to dashboard
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+    }
   };
 
   const isFormValid =
@@ -72,7 +90,6 @@ const Signup = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {/* Left Column */}
             <div className="space-y-5">
               <input type="text" name="firstName" placeholder="First Name" value={form.firstName} onChange={handleChange} className="w-full px-6 py-4 rounded-full bg-white/20 text-white placeholder-white/70 border" />
               <input type="text" name="lastName" placeholder="Last Name" value={form.lastName} onChange={handleChange} className="block md:hidden w-full px-6 py-4 rounded-full bg-white/20 text-white placeholder-white/70 border" />
@@ -87,17 +104,32 @@ const Signup = () => {
               </select>
             </div>
 
-            {/* Right Column */}
-            <div className="flex flex-col justify-between items-center h-full">
+            <div className="flex flex-col justify-between items-center h-full space-y-5">
               <input type="text" name="lastName" placeholder="Last Name" value={form.lastName} onChange={handleChange} className="hidden md:block w-full px-6 py-4 rounded-full bg-white/20 text-white border" />
-              <button type="button" onClick={() => setShowPopup(true)} disabled={!isFormValid} className={`mt-auto mb-auto w-24 h-24 rounded-full text-blue-700 font-semibold ${isFormValid ? 'bg-white hover:bg-blue-100' : 'bg-gray-400 cursor-not-allowed'}`}>
+              <button type="button" onClick={() => setShowPopup(true)} disabled={!isFormValid} className={`w-24 h-24 rounded-full text-blue-700 font-semibold ${isFormValid ? 'bg-white hover:bg-blue-100' : 'bg-gray-400 cursor-not-allowed'}`}>
                 Next
               </button>
+
+              <div className="flex gap-2">
+                <button type="button" onClick={handleGoogleLogin} className="backdrop-blur-md bg-gradient-to-r from-yellow-300 via-blue-5100 to-red-500/60 border border-white/30 text-white px-3 py-1 rounded-md flex items-center gap-2 text-sm hover:bg-white/20 transition">
+                  <FaGoogle size={16} />
+                  Google
+                </button>
+
+                <button className="backdrop-blur-md bg-gradient-to-r from-black to-blue-500/60 border border-white/30 text-white px-3 py-1 rounded-md flex items-center gap-2 text-sm hover:bg-white/20 transition">
+                  <FaApple size={16} />
+                  Apple
+                </button>
+
+                <button className="backdrop-blur-md bg-gradient-to-r from-blue-900 via-blue-100 to-blue-500/60 border border-white/30 text-white px-3 py-1 rounded-md flex items-center gap-2 text-sm hover:bg-white/20 transition">
+                  <SiSamsung size={16} />
+                  Samsung
+                </button>
+              </div>
             </div>
           </div>
         </motion.form>
 
-        {/* Password Popup */}
         {showPopup && (
           <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
             <div className="bg-gradient-to-br from-blue-100 via-white to-blue-200 rounded-xl p-8 shadow-2xl w-full max-w-md">
@@ -112,7 +144,6 @@ const Signup = () => {
           </motion.div>
         )}
 
-        {/* Password Mismatch Popup */}
         {showErrorPopup && (
           <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
             <div className="bg-gradient-to-br from-red-100 via-white to-red-200 rounded-xl p-6 shadow-2xl w-full max-w-md text-center">

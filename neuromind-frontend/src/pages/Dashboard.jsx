@@ -52,10 +52,7 @@ const Dashboard = () => {
   const options = {
     plugins: {
       legend: {
-        position: 'bottom',
-        labels: {
-          color: '#ffffff',
-        },
+        display: false,
       },
     },
   };
@@ -64,15 +61,26 @@ const Dashboard = () => {
     <section className="min-h-screen bg-gradient-to-r from-[#0000] to-[#009ffd] text-white px-4 pt-[87px]">
       <Navbar />
 
+      {/* Glassmorphic Update Profile Button */}
+      <div className="flex justify-end px-4 mt-4">
+        <button
+          onClick={() => alert('Update Profile feature coming soon!')}
+          className="backdrop-blur-md bg-white/10 border border-white/20 text-white font-medium px-6 py-2 w-28 h-28 rounded-full
+                     shadow-lg transition-all duration-300 hover:bg-white/20 hover:scale-105 active:scale-95"
+        >
+          Update Profile
+        </button>
+      </div>
+
       {/* Donut Chart */}
       <div className="absolute top-[87px] left-4 w-[230px] h-[230px] z-10">
         <Pie data={riskData} options={options} />
       </div>
 
       {/* Welcome Section */}
-      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] pt-10 text-center space-y-6">
+      <div className="flex flex-col items-center justify-center pt-10 text-center space-y-6">
         <h1 className="text-4xl font-bold">
-          Welcome back, <span className="text-yellow-300">{userName}</span> 👋
+          Welcome back, <span className="text-yellow-300">{userName}</span>
         </h1>
         <p className="text-lg text-white/80 max-w-xl">
           This is your NeuroMind Dashboard — more exciting features coming soon!
