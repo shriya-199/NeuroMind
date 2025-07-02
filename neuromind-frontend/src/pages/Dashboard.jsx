@@ -65,7 +65,7 @@ const Dashboard = () => {
       <div className="flex justify-end px-4 mt-4">
         <button
           onClick={() => alert('Update Profile feature coming soon!')}
-          className="backdrop-blur-md bg-white/10 border border-white/20 text-white font-medium px-6 py-2 w-28 h-28 rounded-full
+          className="backdrop-blur-md bg-white/10 border border-white/20 text-white font-medium px-6 py-2 w-28 h-27 rounded-full
                      shadow-lg transition-all duration-300 hover:bg-white/20 hover:scale-105 active:scale-95"
         >
           Update Profile
